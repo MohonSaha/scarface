@@ -1,36 +1,40 @@
-export interface ResultData {
-  year: number;
-  appeared: number;
-  passed: number;
-  failed: number;
-  aPlus: number;
-  passRate: number;
-  failRate: number;
-  aPlusRate: number;
+export interface Task {
+  id: string
+  title: string
+  startTime: Date
+  endTime: Date
+  completed: boolean
+  categoryId?: string
+  categoryName?: string
+  categoryColor?: string
+  status?: string
+  notes?: string
 }
 
-export interface ResultsProps {
-  title: string;
-  recentYears: ResultData[];
-  historicalData: ResultData[];
-}
+export type TaskStatus = "scheduled" | "in_progress" | "completed" | "failed"
 
-export type ResultField = 'appeared' | 'passed' | 'failed' | 'aPlus' | 'passRate' | 'failRate' | 'aPlusRate';
-
-export interface YearRange {
-  start: number;
-  end: number;
-}
-
-interface PersonnelCount {
-    year: number;
-    male: number;
-    female: number;
-    total: number;
+export interface DailyTask {
+  id: string
+  title: string
+  date: string
+  startTime: Date
+  endTime: Date
+  status: TaskStatus
+  categoryId?: string
+  category?: {
+    id: string
+    name: string
+    color?: string
   }
-  
- export  interface PersonnelData {
-    category: string;
-    recentYears: PersonnelCount[];
-    historicalData: PersonnelCount[];
-  }
+  notes?: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface Category {
+  id: string
+  name: string
+  color: string
+  score?: number
+}
+

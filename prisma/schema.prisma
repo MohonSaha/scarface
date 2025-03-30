@@ -22,6 +22,7 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   dailyCategories DailyCategory[]
+  dailyTasks      DailyTask[]
 }
 
 model DailyCategory {
@@ -34,4 +35,22 @@ model DailyCategory {
 
   @@unique([date, categoryId])
   @@index([date])
+}
+
+model DailyTask {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  date        String
+  startTime   DateTime
+  endTime     DateTime
+  status      String   @default("scheduled") // scheduled, in_progress, completed, failed
+  categoryId  String?  @db.ObjectId
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date])
+  @@index([status])
+  @@index([categoryId])
 }
