@@ -1,10 +1,83 @@
+// import prisma from "@/utils/connect"
+// import { type NextRequest, NextResponse } from "next/server"
+
+// // GET a specific category
+// export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+//   try {
+//     const id = params.id
+
+//     const category = await prisma.category.findUnique({
+//       where: { id },
+//     })
+
+//     if (!category) {
+//       return NextResponse.json({ error: "Category not found" }, { status: 404 })
+//     }
+
+//     return NextResponse.json(category)
+//   } catch (error) {
+//     console.error("Error fetching category:", error)
+//     return NextResponse.json({ error: "Failed to fetch category" }, { status: 500 })
+//   }
+// }
+
+// // PATCH to update a category
+// export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+//   try {
+//     const id = params.id
+//     const data = await request.json()
+
+//     // Validate required fields
+//     if ((!data.name && data.score === undefined) || (data.score !== undefined && typeof data.score !== "number")) {
+//       return NextResponse.json({ error: "Invalid update data. Provide name and/or valid score" }, { status: 400 })
+//     }
+
+//     // Update the category
+//     const updatedCategory = await prisma.category.update({
+//       where: { id },
+//       data: {
+//         name: data.name,
+//         score: data.score,
+//         color: data.color,
+//       },
+//     })
+
+//     return NextResponse.json(updatedCategory)
+//   } catch (error) {
+//     console.error("Error updating category:", error)
+//     return NextResponse.json({ error: "Failed to update category" }, { status: 500 })
+//   }
+// }
+
+// // DELETE a category
+// export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+//   try {
+//     const id = params.id
+
+//     await prisma.category.delete({
+//       where: { id },
+//     })
+
+//     return NextResponse.json({ message: "Category deleted successfully" })
+//   } catch (error) {
+//     console.error("Error deleting category:", error)
+//     return NextResponse.json({ error: "Failed to delete category" }, { status: 500 })
+//   }
+// }
+
+
 import prisma from "@/utils/connect"
 import { type NextRequest, NextResponse } from "next/server"
 
 // GET a specific category
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest) {
   try {
-    const id = params.id
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get("id")
+
+    if (!id) {
+      return NextResponse.json({ error: "Category ID is required" }, { status: 400 })
+    }
 
     const category = await prisma.category.findUnique({
       where: { id },
@@ -22,9 +95,15 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 }
 
 // PATCH to update a category
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest) {
   try {
-    const id = params.id
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get("id")
+
+    if (!id) {
+      return NextResponse.json({ error: "Category ID is required" }, { status: 400 })
+    }
+
     const data = await request.json()
 
     // Validate required fields
@@ -36,9 +115,9 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     const updatedCategory = await prisma.category.update({
       where: { id },
       data: {
-        name: data.name,
-        score: data.score,
-        color: data.color,
+        name: data.name || undefined,
+        score: data.score || undefined,
+        color: data.color || undefined,
       },
     })
 
@@ -53,6 +132,10 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const id = params.id
+
+    if (!id) {
+      return NextResponse.json({ error: "Category ID is required" }, { status: 400 })
+    }
 
     await prisma.category.delete({
       where: { id },

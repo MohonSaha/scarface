@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 // "use client"
 
@@ -154,20 +155,542 @@
 // }
 
 
+// "use client"
+
+// import type React from "react"
+
+// import { useState, useEffect } from "react"
+// import { Filter, CheckCircle, XCircle, Clock, BarChart3, Calendar, Play } from "lucide-react"
+// import { Button } from "@/components/ui/button"
+// import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+// import { TasksModal } from "@/components/tasks-modal"
+// import { RescheduleModal } from "@/components/reschedule-modal"
+// import { StatisticsDialog } from "@/components/statistics-dialog"
+// import { Input } from "@/components/ui/input"
+// import { fetchDailyTasks, updateDailyTask } from "@/components/task-service"
+// import { TaskStatus } from "@/app/types/types"
+// import { DailyTask } from "@prisma/client"
+
+// interface WorkFilterProps {
+//   date: string
+//   onDateChange: (date: string) => void
+// }
+
+// export function WorkFilter({ date, onDateChange }: WorkFilterProps) {
+//   const [showTasksModal, setShowTasksModal] = useState(false)
+//   const [showRescheduleModal, setShowRescheduleModal] = useState(false)
+//   const [showStatisticsDialog, setShowStatisticsDialog] = useState(false)
+//   const [selectedFilter, setSelectedFilter] = useState<TaskStatus | "total">("total")
+//   const [selectedTask, setSelectedTask] = useState<DailyTask | null>(null)
+//   const [tasks, setTasks] = useState<DailyTask[]>([])
+//   const [isLoading, setIsLoading] = useState(false)
+
+//   // Fetch tasks for the selected date
+//   useEffect(() => {
+//     const fetchTasks = async () => {
+//       try {
+//         setIsLoading(true)
+//         const data = await fetchDailyTasks(date)
+//         setTasks(data.map(task => ({ 
+//           ...task, 
+//           categoryId: task.categoryId ?? null, 
+//           notes: task.notes ?? null 
+//         })))
+//       } catch (err) {
+//         console.error("Error fetching tasks:", err)
+//       } finally {
+//         setIsLoading(false)
+//       }
+//     }
+
+//     fetchTasks()
+//   }, [date])
+
+//   // Filter tasks based on selected filter
+//   const getFilteredTasks = () => {
+//     switch (selectedFilter) {
+//       case "completed":
+//         return tasks.filter((task) => task.status === "completed")
+//       case "failed":
+//         return tasks.filter((task) => task.status === "failed")
+//       case "in_progress":
+//         return tasks.filter((task) => task.status === "in_progress")
+//       case "scheduled":
+//         return tasks.filter((task) => task.status === "scheduled")
+//       case "total":
+//       default:
+//         return tasks
+//     }
+//   }
+
+//   const handleFilterSelect = (filter: TaskStatus | "total") => {
+//     setSelectedFilter(filter)
+//     setShowTasksModal(true)
+//   }
+
+//   const handleTaskClick = (task: DailyTask) => {
+//     if (selectedFilter === "failed") {
+//       setSelectedTask(task)
+//       setShowRescheduleModal(true)
+//     }
+//   }
+
+//   const handleRescheduleTask = async (taskId: string, startTime: Date, endTime: Date) => {
+//     try {
+//       await updateDailyTask(taskId, {
+//         startTime,
+//         endTime,
+//         status: "scheduled",
+//       })
+
+//       // Refresh tasks
+//       const updatedTasks = await fetchDailyTasks(date)
+//       setTasks(updatedTasks.map(task => ({
+//         ...task,
+//         categoryId: task.categoryId ?? null,
+//         notes: task.notes ?? null,
+//       })))
+
+//       setShowRescheduleModal(false)
+//     } catch (err) {
+//       console.error("Error rescheduling task:", err)
+//     }
+//   }
+
+//   // Count tasks by status
+//   const completedCount = tasks.filter((task) => task.status === "completed").length
+//   const failedCount = tasks.filter((task) => task.status === "failed").length
+//   const inProgressCount = tasks.filter((task) => task.status === "in_progress").length
+//   const scheduledCount = tasks.filter((task) => task.status === "scheduled").length
+
+//   return (
+//     <>
+//       <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+//         <div className="flex items-center gap-2">
+//           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+//             <Filter className="h-5 w-5 text-primary" />
+//           </div>
+//           <h2 className="text-lg font-medium">Task Dashboard</h2>
+//         </div>
+
+//         <div className="flex items-center gap-2">
+//           <Label htmlFor="date-input">Date:</Label>
+//           <Input
+//             id="date-input"
+//             type="date"
+//             value={date}
+//             onChange={(e) => onDateChange(e.target.value)}
+//             className="w-auto"
+//           />
+//         </div>
+
+//         {/* Mobile Buttons */}
+//         <div className="flex flex-wrap gap-2 md:hidden">
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("total")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <Clock className="h-4 w-4 text-primary" />
+//             <span className="text-xs font-medium">{tasks.length}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("completed")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <CheckCircle className="h-4 w-4 text-green-500" />
+//             <span className="text-xs font-medium">{completedCount}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("in_progress")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <Play className="h-4 w-4 text-blue-500" />
+//             <span className="text-xs font-medium">{inProgressCount}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("failed")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <XCircle className="h-4 w-4 text-red-500" />
+//             <span className="text-xs font-medium">{failedCount}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => setShowStatisticsDialog(true)}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <BarChart3 className="h-4 w-4 text-purple-500" />
+//             <span className="text-xs font-medium">Stats</span>
+//           </Button>
+//         </div>
+
+//         {/* Desktop Dropdown */}
+//         <div className="ml-auto hidden md:flex gap-2">
+//           <DropdownMenu>
+//             <DropdownMenuTrigger asChild>
+//               <Button variant="outline" className="flex items-center gap-2">
+//                 <Filter className="h-4 w-4" />
+//                 Task Filter
+//               </Button>
+//             </DropdownMenuTrigger>
+//             <DropdownMenuContent align="end">
+//               <DropdownMenuItem onClick={() => handleFilterSelect("total")}>
+//                 <Clock className="h-4 w-4 mr-2" />
+//                 All Tasks ({tasks.length})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("scheduled")}>
+//                 <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+//                 Scheduled ({scheduledCount})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("in_progress")}>
+//                 <Play className="h-4 w-4 mr-2 text-blue-500" />
+//                 In Progress ({inProgressCount})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("completed")}>
+//                 <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+//                 Completed ({completedCount})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("failed")}>
+//                 <XCircle className="h-4 w-4 mr-2 text-red-500" />
+//                 Failed ({failedCount})
+//               </DropdownMenuItem>
+//             </DropdownMenuContent>
+//           </DropdownMenu>
+
+//           <Button variant="outline" onClick={() => setShowStatisticsDialog(true)} className="flex items-center gap-2">
+//             <BarChart3 className="h-4 w-4" />
+//             Statistics
+//           </Button>
+//         </div>
+//       </div>
+
+//       {/* Tasks Modal */}
+//       {showTasksModal && (
+//         <TasksModal
+//           tasks={getFilteredTasks()}
+//           filterType={selectedFilter}
+//           onClose={() => setShowTasksModal(false)}
+//           onTaskClick={handleTaskClick}
+//         />
+//       )}
+
+//       {/* Reschedule Modal */}
+//       {showRescheduleModal && selectedTask && (
+//         <RescheduleModal
+//           task={{
+//             id: selectedTask.id,
+//             title: selectedTask.title,
+//             startTime: selectedTask.startTime,
+//             endTime: selectedTask.endTime,
+//             completed: selectedTask.status === "completed",
+//           }}
+//           onClose={() => setShowRescheduleModal(false)}
+//           onReschedule={(startTime, endTime) => {
+//             handleRescheduleTask(selectedTask.id, startTime, endTime)
+//           }}
+//         />
+//       )}
+
+//       {/* Statistics Dialog */}
+//       {showStatisticsDialog && <StatisticsDialog date={date} onClose={() => setShowStatisticsDialog(false)} />}
+//     </>
+//   )
+// }
+
+// function Label({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
+//   return (
+//     <label htmlFor={htmlFor} className="text-sm font-medium">
+//       {children}
+//     </label>
+//   )
+// }
+
+
+
+// "use client"
+
+// import type React from "react"
+
+// import { useState, useEffect } from "react"
+// import { Filter, CheckCircle, XCircle, Clock, BarChart3, Calendar, Play } from "lucide-react"
+// import { Button } from "@/components/ui/button"
+// import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+// import { TasksModal } from "@/components/tasks-modal"
+// import { RescheduleModal } from "@/components/reschedule-modal"
+// import { StatisticsDialog } from "@/components/statistics-dialog"
+// import { Input } from "@/components/ui/input"
+// // import type { DailyTask, TaskStatus } from "@/types/task"
+// import { fetchDailyTasks, updateDailyTask } from "@/components/task-service"
+// import { DailyTask, TaskStatus } from "@/app/types/types"
+
+// interface WorkFilterProps {
+//   date: string
+//   onDateChange: (date: string) => void
+// }
+
+// export function WorkFilter({ date, onDateChange }: WorkFilterProps) {
+//   const [showTasksModal, setShowTasksModal] = useState(false)
+//   const [showRescheduleModal, setShowRescheduleModal] = useState(false)
+//   const [showStatisticsDialog, setShowStatisticsDialog] = useState(false)
+//   const [selectedFilter, setSelectedFilter] = useState<TaskStatus | "total">("total")
+//   const [selectedTask, setSelectedTask] = useState<DailyTask | null>(null)
+//   const [tasks, setTasks] = useState<DailyTask[]>([])
+//   const [isLoading, setIsLoading] = useState(false)
+
+//   // Fetch tasks for the selected date
+//   useEffect(() => {
+//     const fetchTasks = async () => {
+//       try {
+//         setIsLoading(true)
+//         const data = await fetchDailyTasks(date)
+//         setTasks(data)
+//       } catch (err) {
+//         console.error("Error fetching tasks:", err)
+//       } finally {
+//         setIsLoading(false)
+//       }
+//     }
+
+//     fetchTasks()
+//   }, [date])
+
+//   // Filter tasks based on selected filter
+//   const getFilteredTasks = () => {
+//     // Make sure we're explicitly casting the status to TaskStatus
+//     switch (selectedFilter) {
+//       case "completed":
+//         return tasks.filter((task) => task.status === "completed") as DailyTask[]
+//       case "failed":
+//         return tasks.filter((task) => task.status === "failed") as DailyTask[]
+//       case "in_progress":
+//         return tasks.filter((task) => task.status === "in_progress") as DailyTask[]
+//       case "scheduled":
+//         return tasks.filter((task) => task.status === "scheduled") as DailyTask[]
+//       case "total":
+//       default:
+//         return tasks as DailyTask[]
+//     }
+//   }
+
+//   const handleFilterSelect = (filter: TaskStatus | "total") => {
+//     setSelectedFilter(filter)
+//     setShowTasksModal(true)
+//   }
+
+//   const handleTaskClick = (task: DailyTask) => {
+//     if (selectedFilter === "failed") {
+//       setSelectedTask(task)
+//       setShowRescheduleModal(true)
+//     }
+//   }
+
+//   const handleRescheduleTask = async (taskId: string, startTime: Date, endTime: Date) => {
+//     try {
+//       await updateDailyTask(taskId, {
+//         startTime,
+//         endTime,
+//         status: "scheduled",
+//       })
+
+//       // Refresh tasks
+//       const updatedTasks = await fetchDailyTasks(date)
+//       setTasks(updatedTasks)
+
+//       setShowRescheduleModal(false)
+//     } catch (err) {
+//       console.error("Error rescheduling task:", err)
+//     }
+//   }
+
+//   // Count tasks by status
+//   const completedCount = tasks.filter((task) => task.status === "completed").length
+//   const failedCount = tasks.filter((task) => task.status === "failed").length
+//   const inProgressCount = tasks.filter((task) => task.status === "in_progress").length
+//   const scheduledCount = tasks.filter((task) => task.status === "scheduled").length
+
+//   return (
+//     <>
+//       <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+//         <div className="flex items-center gap-2">
+//           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+//             <Filter className="h-5 w-5 text-primary" />
+//           </div>
+//           <h2 className="text-lg font-medium">Task Dashboard</h2>
+//         </div>
+
+//         <div className="flex items-center gap-2">
+//           <Label htmlFor="date-input">Date:</Label>
+//           <Input
+//             id="date-input"
+//             type="date"
+//             value={date}
+//             onChange={(e) => onDateChange(e.target.value)}
+//             className="w-auto"
+//           />
+//         </div>
+
+//         {/* Mobile Buttons */}
+//         <div className="flex flex-wrap gap-2 md:hidden">
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("total")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <Clock className="h-4 w-4 text-primary" />
+//             <span className="text-xs font-medium">{tasks.length}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("completed")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <CheckCircle className="h-4 w-4 text-green-500" />
+//             <span className="text-xs font-medium">{completedCount}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("in_progress")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <Play className="h-4 w-4 text-blue-500" />
+//             <span className="text-xs font-medium">{inProgressCount}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => handleFilterSelect("failed")}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <XCircle className="h-4 w-4 text-red-500" />
+//             <span className="text-xs font-medium">{failedCount}</span>
+//           </Button>
+
+//           <Button
+//             variant="outline"
+//             size="sm"
+//             onClick={() => setShowStatisticsDialog(true)}
+//             className="flex items-center gap-1 h-9 px-2"
+//           >
+//             <BarChart3 className="h-4 w-4 text-purple-500" />
+//             <span className="text-xs font-medium">Stats</span>
+//           </Button>
+//         </div>
+
+//         {/* Desktop Dropdown */}
+//         <div className="ml-auto hidden md:flex gap-2">
+//           <DropdownMenu>
+//             <DropdownMenuTrigger asChild>
+//               <Button variant="outline" className="flex items-center gap-2">
+//                 <Filter className="h-4 w-4" />
+//                 Task Filter
+//               </Button>
+//             </DropdownMenuTrigger>
+//             <DropdownMenuContent align="end">
+//               <DropdownMenuItem onClick={() => handleFilterSelect("total")}>
+//                 <Clock className="h-4 w-4 mr-2" />
+//                 All Tasks ({tasks.length})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("scheduled")}>
+//                 <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+//                 Scheduled ({scheduledCount})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("in_progress")}>
+//                 <Play className="h-4 w-4 mr-2 text-blue-500" />
+//                 In Progress ({inProgressCount})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("completed")}>
+//                 <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+//                 Completed ({completedCount})
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => handleFilterSelect("failed")}>
+//                 <XCircle className="h-4 w-4 mr-2 text-red-500" />
+//                 Failed ({failedCount})
+//               </DropdownMenuItem>
+//             </DropdownMenuContent>
+//           </DropdownMenu>
+
+//           <Button variant="outline" onClick={() => setShowStatisticsDialog(true)} className="flex items-center gap-2">
+//             <BarChart3 className="h-4 w-4" />
+//             Statistics
+//           </Button>
+//         </div>
+//       </div>
+
+//       {/* Tasks Modal */}
+//       {showTasksModal && (
+//         <TasksModal
+//           tasks={getFilteredTasks()}
+//           filterType={selectedFilter}
+//           onClose={() => setShowTasksModal(false)}
+//           onTaskClick={handleTaskClick}
+//         />
+//       )}
+
+//       {/* Reschedule Modal */}
+//       {showRescheduleModal && selectedTask && (
+//         <RescheduleModal
+//           task={{
+//             id: selectedTask.id,
+//             title: selectedTask.title,
+//             startTime: selectedTask.startTime,
+//             endTime: selectedTask.endTime,
+//             completed: selectedTask.status === "completed",
+//           }}
+//           onClose={() => setShowRescheduleModal(false)}
+//           onReschedule={(startTime, endTime) => {
+//             handleRescheduleTask(selectedTask.id, startTime, endTime)
+//           }}
+//         />
+//       )}
+
+//       {/* Statistics Dialog */}
+//       {showStatisticsDialog && <StatisticsDialog date={date} onClose={() => setShowStatisticsDialog(false)} />}
+//     </>
+//   )
+// }
+
+// function Label({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
+//   return (
+//     <label htmlFor={htmlFor} className="text-sm font-medium">
+//       {children}
+//     </label>
+//   )
+// }
+
+
+
 "use client"
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Filter, CheckCircle, XCircle, Clock, BarChart3, Calendar, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { TasksModal } from "@/components/tasks-modal"
 import { RescheduleModal } from "@/components/reschedule-modal"
 import { StatisticsDialog } from "@/components/statistics-dialog"
 import { Input } from "@/components/ui/input"
-import type { DailyTask, TaskStatus } from "@/types/task"
 import { fetchDailyTasks, updateDailyTask } from "@/components/task-service"
+import { DailyTask, TaskStatus } from "@/app/types/types"
 
 interface WorkFilterProps {
   date: string
@@ -182,6 +705,9 @@ export function WorkFilter({ date, onDateChange }: WorkFilterProps) {
   const [selectedTask, setSelectedTask] = useState<DailyTask | null>(null)
   const [tasks, setTasks] = useState<DailyTask[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   // Fetch tasks for the selected date
   useEffect(() => {
@@ -200,26 +726,47 @@ export function WorkFilter({ date, onDateChange }: WorkFilterProps) {
     fetchTasks()
   }, [date])
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        buttonRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
   // Filter tasks based on selected filter
   const getFilteredTasks = () => {
+    // Make sure we're explicitly casting the status to TaskStatus
     switch (selectedFilter) {
       case "completed":
-        return tasks.filter((task) => task.status === "completed")
+        return tasks.filter((task) => task.status === "completed") as DailyTask[]
       case "failed":
-        return tasks.filter((task) => task.status === "failed")
+        return tasks.filter((task) => task.status === "failed") as DailyTask[]
       case "in_progress":
-        return tasks.filter((task) => task.status === "in_progress")
+        return tasks.filter((task) => task.status === "in_progress") as DailyTask[]
       case "scheduled":
-        return tasks.filter((task) => task.status === "scheduled")
+        return tasks.filter((task) => task.status === "scheduled") as DailyTask[]
       case "total":
       default:
-        return tasks
+        return tasks as DailyTask[]
     }
   }
 
   const handleFilterSelect = (filter: TaskStatus | "total") => {
     setSelectedFilter(filter)
     setShowTasksModal(true)
+    setShowDropdown(false)
   }
 
   const handleTaskClick = (task: DailyTask) => {
@@ -329,36 +876,61 @@ export function WorkFilter({ date, onDateChange }: WorkFilterProps) {
 
         {/* Desktop Dropdown */}
         <div className="ml-auto hidden md:flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                <Filter className="h-4 w-4" />
-                Task Filter
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleFilterSelect("total")}>
-                <Clock className="h-4 w-4 mr-2" />
-                All Tasks ({tasks.length})
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleFilterSelect("scheduled")}>
-                <Calendar className="h-4 w-4 mr-2 text-gray-500" />
-                Scheduled ({scheduledCount})
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleFilterSelect("in_progress")}>
-                <Play className="h-4 w-4 mr-2 text-blue-500" />
-                In Progress ({inProgressCount})
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleFilterSelect("completed")}>
-                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                Completed ({completedCount})
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleFilterSelect("failed")}>
-                <XCircle className="h-4 w-4 mr-2 text-red-500" />
-                Failed ({failedCount})
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="relative">
+            <button
+              ref={buttonRef}
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-muted"
+            >
+              <Filter className="h-4 w-4" />
+              Task Filter
+            </button>
+
+            {showDropdown && (
+              <div
+                ref={dropdownRef}
+                className="absolute right-0 mt-1 w-56 rounded-md shadow-lg bg-white border border-gray-200 z-50"
+              >
+                <div className="py-1">
+                  <button
+                    onClick={() => handleFilterSelect("total")}
+                    className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                  >
+                    <Clock className="h-4 w-4 mr-2" />
+                    All Tasks ({tasks.length})
+                  </button>
+                  <button
+                    onClick={() => handleFilterSelect("scheduled")}
+                    className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                  >
+                    <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+                    Scheduled ({scheduledCount})
+                  </button>
+                  <button
+                    onClick={() => handleFilterSelect("in_progress")}
+                    className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                  >
+                    <Play className="h-4 w-4 mr-2 text-blue-500" />
+                    In Progress ({inProgressCount})
+                  </button>
+                  <button
+                    onClick={() => handleFilterSelect("completed")}
+                    className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                  >
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                    Completed ({completedCount})
+                  </button>
+                  <button
+                    onClick={() => handleFilterSelect("failed")}
+                    className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                  >
+                    <XCircle className="h-4 w-4 mr-2 text-red-500" />
+                    Failed ({failedCount})
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           <Button variant="outline" onClick={() => setShowStatisticsDialog(true)} className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />

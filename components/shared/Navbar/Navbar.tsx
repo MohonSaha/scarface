@@ -13,7 +13,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CategoryButton } from "@/components/category-button";
 import { NavigationMenuLink } from "@/components/ui/navigation-menu";
 
 const navigation = [
@@ -36,8 +35,8 @@ export function Navbar() {
               <div className="relative">
                 <div className="h-[70px] w-[70px] rounded-full p-1 -ml-3">
                   <Image
-                    src="https://i.ibb.co.com/LD27kXxw/473068280-3922681521336562-55110548601466905-n-fotor-bg-remover-20250312165419.png"
-                    alt="Mohon Saha"
+                   src="/images/icons/scarface.jpg"
+                    alt="scarface"
                     width={70}
                     height={70}
                     className="h-full w-full rounded-full object-cover border-2 border-white"
@@ -105,6 +104,7 @@ export function Navbar() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
+                <Link className="text-green-600" href='/life-lessons'>
               <Button
                   variant="default"
                   size="icon"
@@ -112,6 +112,7 @@ export function Navbar() {
                 >
                   <SquarePlus className="h-4 w-4" />
                 </Button>
+                </Link>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Add Content</p>

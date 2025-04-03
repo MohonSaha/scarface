@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 
 
@@ -860,7 +861,9 @@ export function TasksList({ tasks: legacyTasks, onUpdateTaskStatus, date = new D
             return (
               <div
                 key={index}
-                ref={(el) => (hourRefs.current[index] = el)}
+                ref={(el) => {
+                  hourRefs.current[index] = el;
+                }}
                 className="relative z-10"
                 id={`hour-${hourNum}`}
               >

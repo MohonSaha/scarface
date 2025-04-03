@@ -36,7 +36,15 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     // Prepare the data for update
-    const updateData: any = {}
+    const updateData: Partial<{
+      title: string;
+      date: string;
+      startTime: Date;
+      endTime: Date;
+      status: string;
+      categoryId: string | null;
+      notes: string;
+    }> = {}
 
     if (data.title !== undefined) updateData.title = data.title
     if (data.date !== undefined) updateData.date = data.date

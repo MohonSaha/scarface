@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const categoryId = url.searchParams.get("categoryId")
 
     // Build the where clause based on provided filters
-    const where: any = {}
+    const where: Record<string, string | null> = {}
 
     if (date) {
       where.date = date

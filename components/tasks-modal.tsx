@@ -197,6 +197,7 @@ export function TasksModal({ tasks, filterType, onClose, onTaskClick }: TasksMod
       success(`Task marked as ${status}`)
 
       // Update the task in the list
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const updatedTasks = tasks.map((task) => (task.id === taskId ? { ...task, status } : task))
 
       // This is a bit of a hack since we can't update the parent's state directly

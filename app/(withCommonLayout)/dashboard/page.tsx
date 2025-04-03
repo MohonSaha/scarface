@@ -125,13 +125,12 @@ import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { TaskForm } from "@/components/task-form"
 import { TasksList } from "@/components/tasks-list"
-import type { Task } from "@/types/task"
 
 export default function DashboardPage() {
   const [showTaskForm, setShowTaskForm] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(format(new Date(), "yyyy-MM-dd"))
+  const [selectedDate] = useState(format(new Date(), "yyyy-MM-dd"))
 
-  const handleAddTask = (task: Task) => {
+  const handleAddTask = () => {
     setShowTaskForm(false)
   }
 

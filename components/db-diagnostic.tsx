@@ -7,6 +7,7 @@ import { Loader2, AlertCircle, CheckCircle, Database } from "lucide-react"
 
 export function DbDiagnostic() {
   const [isLoading, setIsLoading] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [results, setResults] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
 

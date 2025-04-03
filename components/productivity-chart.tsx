@@ -26,6 +26,7 @@ export function ProductivityChart({
   currentPeriodData,
   previousPeriodData = [],
   showComparison = true,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   periodLabel = "Period",
   height = 250,
   className,

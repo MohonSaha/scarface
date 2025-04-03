@@ -129,6 +129,7 @@ interface TaskFormProps {
   initialDate?: Date
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function TaskForm({ onClose, onAddTask, initialDate = new Date() }: TaskFormProps) {
   const { success, error: showError } = useToast()
   const [title, setTitle] = useState("")

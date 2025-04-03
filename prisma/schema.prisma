@@ -13,7 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Category {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
@@ -54,3 +53,25 @@ model DailyTask {
   @@index([status])
   @@index([categoryId])
 }
+
+model LifeLessonCategory {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  lifeLessons LifeLesson[]
+}
+
+model LifeLesson {
+  id          String             @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  categoryId  String?            @db.ObjectId
+  category    LifeLessonCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([categoryId])
+  @@index([createdAt])
+}
+

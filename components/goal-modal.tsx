@@ -330,6 +330,7 @@ export function GoalModal({ type, onClose }: GoalModalProps) {
   useEffect(() => {
     const saved = localStorage.getItem(`${type}Goals`)
     if (saved) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const parsedGoals = JSON.parse(saved).map((goal: any) => ({
         ...goal,
         startDate: new Date(goal.startDate),

@@ -104,15 +104,15 @@ const Loader = ({ onLoadingComplete }: LoaderProps) => {
     <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
       <div className="relative">
         {/* Circle container - responsive sizing */}
-        {/* <div className="w-20 h-20 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden border-4 border-gray-100 shadow-md">
+        <div className="w-20 h-20 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden border-4 border-gray-100 shadow-md">
           <Image
-            src="/images/logos/logo.png"
+            src="/images/icons/scarface.jpg"
             alt="Logo"
             fill
             className="object-cover"
             priority
           />
-        </div> */}
+        </div>
         
         {/* Circular progress indicator - matching the container size */}
         <div 
