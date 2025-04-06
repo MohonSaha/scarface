@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { NavigationMenuLink } from "@/components/ui/navigation-menu";
+import ProgressBar from "@/components/progress-bar/ProgressBar";
 
 const navigation = [
   { name: "প্রধান পাতা", href: "/" },
@@ -33,15 +34,16 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center space-x-2">
               <div className="relative">
-                <div className="h-[70px] w-[70px] rounded-full p-1 -ml-3">
-                  <Image
+                {/* <div className="h-[70px] w-[70px] rounded-full p-1 -ml-3"> */}
+                  {/* <Image
                    src="/images/icons/scarface.jpg"
                     alt="scarface"
                     width={70}
                     height={70}
                     className="h-full w-full rounded-full object-cover border-2 border-white"
-                  />
-                </div>
+                  /> */}
+                  <ProgressBar value={10} maxValue={12} />
+                {/* </div> */}
               </div>
             </Link>
           </div>

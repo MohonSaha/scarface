@@ -58,20 +58,31 @@ export default function LifeLessonsPage() {
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6">Life Lessons</h1>
 
-      {/* Post creation card */}
-      <Card className="mb-6">
-        <CardContent className="p-4">
-          <div
-            className="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-            onClick={() => setShowCreateModal(true)}
-          >
-            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <Edit className="h-5 w-5 text-primary" />
+      {/* Post creation card - Modern & Fancy */}
+      <div className="mb-6 cursor-pointer group" onClick={() => setShowCreateModal(true)}>
+        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg transform transition-all duration-300 group-hover:shadow-xl group-hover:scale-[1.01]">
+          <div className="absolute top-0 left-0 w-full h-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-blue-400/20 blur-xl"></div>
+          <div className="absolute -left-6 -bottom-6 w-24 h-24 rounded-full bg-indigo-400/20 blur-xl"></div>
+
+          <div className="relative p-6 flex items-center gap-4">
+            <div className="flex-shrink-0 h-12 w-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-inner">
+              <Edit className="h-5 w-5 text-white" />
             </div>
-            <p className="text-muted-foreground">Share a life lesson...</p>
+
+            <div className="flex-1">
+              <h3 className="text-white text-lg font-semibold mb-1">Share Your Wisdom</h3>
+              <p className="text-blue-100">What life lesson would you like to share today?</p>
+            </div>
+
+            <div className="flex-shrink-0 h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-inner group-hover:bg-white/30 transition-all duration-300">
+              <Plus className="h-5 w-5 text-white" />
+            </div>
           </div>
-        </CardContent>
-      </Card>
+
+          <div className="h-1 w-full bg-gradient-to-r from-blue-300/50 via-white/30 to-indigo-300/50"></div>
+        </div>
+      </div>
 
       {/* Filter section */}
       <div className="flex items-center gap-4 mb-6">
@@ -121,4 +132,5 @@ export default function LifeLessonsPage() {
     </div>
   )
 }
+
 
